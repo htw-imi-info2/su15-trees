@@ -91,6 +91,19 @@ public class TreeTest {
 		tree.insert(new Integer[] { 10, 7, 3, 9, 20, 15, 11, 13, 30 });
 		assertEquals(11, tree.succ(tree.root).key.intValue());
 	}
+	@Test
+	public void testPredecessor() {
+		Tree<Integer, Object> tree = new Tree<Integer, Object>();
+		tree.insert(new Integer[] { 10, 7, 3, 9, 20, 15, 11, 13, 30 });
+		assertEquals(9, tree.pred(tree.root).key.intValue());
+	}
+	@Test
+	public void testPredecessorIfNonExistent() {
+		Tree<Integer, Object> tree = new Tree<Integer, Object>();
+		tree.insert(new Integer[] { 10, 11 });
+		assertEquals("(10,,(11,,))", tree.root.toString());
+		assertEquals(null, tree.pred(tree.root));
+	}
 
 	@Test
 	public void testSuccessor() {

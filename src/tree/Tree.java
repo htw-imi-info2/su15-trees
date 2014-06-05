@@ -97,6 +97,12 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 			else
 				return rightChild.max();
 		}
+
+		public Tree<K, V>.Node pred() {
+			if (leftChild == null)
+				return null;
+			return leftChild.max();
+		}
 	}
 
 	public Node find(K key) {
@@ -204,12 +210,16 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 			return null;
 		if (node.leftChild == null) {
 			if (node.parent == null)
+				// hier wird root geändert
 				root = node.rightChild;
 			else if (node.parent.leftChild == node)
+				// change
 				node.parent.leftChild = node.rightChild;
 			else
+				// change
 				node.parent.rightChild = node.rightChild;
 			if (node.rightChild != null)
+				// change
 				node.rightChild.parent = node.parent;
 			rebalance.add(node.rightChild == null ? node.parent
 					: node.rightChild);
@@ -217,10 +227,13 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		}
 		if (node.rightChild == null) {
 			if (node.parent == null)
+				// change
 				root = node.leftChild;
 			else if (node.parent.leftChild == node)
+				// change
 				node.parent.leftChild = node.leftChild;
 			else
+				// change
 				node.parent.rightChild = node.leftChild;
 			if (node.leftChild != null)
 				node.leftChild.parent = node.parent;
@@ -445,9 +458,12 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return root.max();
 	}
 
-	public Node succ(Tree<K,V>.Node current) {
-		
+	public Node succ(Tree<K, V>.Node current) {
 		return current.rightChild.min();
+	}
+
+	public Tree<K, V>.Node pred(Tree<K, V>.Node root) {
+		return root.pred();
 	}
 
 }
