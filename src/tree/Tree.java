@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+
 /**
  * Simple Binary Search Tree Implementation. Algorithms are adaptations of those
  * in Cormen, Leiserson, and Rivest's <em>Introduction to Algorithms.
@@ -15,12 +16,10 @@ import java.util.NoSuchElementException;
  */
 public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 	private static final String DELIM = ", ";
-	protected Node<K,V> root;
+	protected Node<K, V> root;
 
-
-
-	public Node<K,V> find(K key) {
-		Node<K,V> currentNode = root;
+	public Node<K, V> find(K key) {
+		Node<K, V> currentNode = root;
 		while (currentNode != null) {
 			int c = key.compareTo(currentNode.key);
 			if (c == 0)
@@ -36,11 +35,11 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return null;
 	}
 
-	public Node<K,V> findRecursive(K key) throws Exception {
+	public Node<K, V> findRecursive(K key) throws Exception {
 		return findRecursive(key, root);
 	}
 
-	public Node<K,V> findRecursive(K key, Node<K,V> currentNode) {
+	public Node<K, V> findRecursive(K key, Node<K, V> currentNode) {
 		if (currentNode == null)
 			return null;
 		int c = key.compareTo(currentNode.key);
@@ -54,7 +53,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		}
 	}
 
-	public Node<K,V> insert(K key) {
+	public Node<K, V> insert(K key) {
 		return insert(key, null);
 	}
 
@@ -64,16 +63,16 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		}
 	}
 
-	public Node<K,V> insert(K key, V value) {
-		return insert(new Node<K,V>(key, value));
+	public Node<K, V> insert(K key, V value) {
+		return insert(new Node<K, V>(key, value));
 	}
 
-	public Node<K,V> insert(Node<K,V> node) {
+	public Node<K, V> insert(Node<K, V> node) {
 		if (root == null) {
 			root = node;
 			return node;
 		}
-		Node<K,V> current = root, parent = null;
+		Node<K, V> current = root, parent = null;
 		while (current != null) {
 			parent = current;
 			if (node.key.compareTo(current.key) < 0) {
@@ -97,29 +96,27 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return root == null;
 	}
 
-	public Node<K,V> getRoot() {
+	public Node<K, V> getRoot() {
 		return root;
 	}
 
 	public String toString() {
-		return traverseInOrderToString(root)
-				.replaceAll("(" + DELIM + ")+", DELIM)
-				.replaceAll("^" + DELIM, "").replaceAll(DELIM + "$", "");
+		return traverseInOrderToString(root).replaceAll("(" + DELIM + ")+", DELIM).replaceAll("^" + DELIM, "")
+				.replaceAll(DELIM + "$", "");
 	}
 
-	private String traverseInOrderToString(Node<K,V> node) {
+	private String traverseInOrderToString(Node<K, V> node) {
 		if (node == null)
 			return "";
 		else
-			return traverseInOrderToString(node.leftChild) + DELIM
-					+ node.key.toString() + DELIM
+			return traverseInOrderToString(node.leftChild) + DELIM + node.key.toString() + DELIM
 					+ traverseInOrderToString(node.rightChild);
 	}
 
-	public List<Node<K,V>> delete(K key) {
-		List<Node<K,V>> rebalance = new ArrayList<Node<K,V>>();
+	public List<Node<K, V>> delete(K key) {
+		List<Node<K, V>> rebalance = new ArrayList<Node<K, V>>();
 
-		Node<K,V> node = find(key);
+		Node<K, V> node = find(key);
 		if (node == null)
 			return null;
 		if (node.leftChild == null) {
@@ -135,8 +132,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 			if (node.rightChild != null)
 				// change
 				node.rightChild.parent = node.parent;
-			rebalance.add(node.rightChild == null ? node.parent
-					: node.rightChild);
+			rebalance.add(node.rightChild == null ? node.parent : node.rightChild);
 			return rebalance;
 		}
 		if (node.rightChild == null) {
@@ -155,7 +151,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 			return rebalance;
 		}
 		// node has 2 childs.
-		Node<K,V> succ = successor(node);
+		Node<K, V> succ = successor(node);
 		if (succ == node.rightChild) {
 			transplant(node, succ);
 			succ.leftChild = node.leftChild;
@@ -172,15 +168,15 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return rebalance;
 	}
 
-	public Node<K,V> successor(K key) {
+	public Node<K, V> successor(K key) {
 		return successor(find(key));
 	}
 
-	public Node<K,V> successor(Node<K,V> node) {
+	public Node<K, V> successor(Node<K, V> node) {
 		if (node.rightChild != null)
 			return minimum(node.rightChild);
-		Node<K,V> up = node.parent;
-		Node<K,V> succ = node;
+		Node<K, V> up = node.parent;
+		Node<K, V> succ = node;
 		while ((up != null) && succ == up.rightChild) {
 			succ = up;
 			up = up.parent;
@@ -194,7 +190,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return toStringTree(root);
 	}
 
-	public String toStringTree(Node<K,V> node) {
+	public String toStringTree(Node<K, V> node) {
 		String left = "(", right = ")", middle = "-";
 		if ((node.leftChild == null) && (node.rightChild == null)) {
 			left = right = middle = "";
@@ -213,11 +209,11 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return result;
 	}
 
-	public Node<K,V> minimum() {
+	public Node<K, V> minimum() {
 		return minimum(root);
 	}
 
-	public Node<K,V> minimum(Node<K,V> node) {
+	public Node<K, V> minimum(Node<K, V> node) {
 		while (node.leftChild != null)
 			node = node.leftChild;
 		return node;
@@ -229,7 +225,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 	 * @param a
 	 * @param b
 	 */
-	public void transplant(Node<K,V> a, Node<K,V> b) {
+	public void transplant(Node<K, V> a, Node<K, V> b) {
 		if (a.parent == null) {
 			root = b;
 			if (b != null)
@@ -258,7 +254,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 	 * @param a
 	 * @param b
 	 */
-	public void replace(Node<K,V> a, Node<K,V> b) {
+	public void replace(Node<K, V> a, Node<K, V> b) {
 		if (a.parent == null)
 			root = b;
 		else {
@@ -290,10 +286,10 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 
 	public class Iterator implements java.util.Iterator<K> {
 		private Cursor c;
-		private Node<K,V> node;
-		private Node<K,V> max;
+		private Node<K, V> node;
+		private Node<K, V> max;
 
-		public Iterator(Node<K,V> node) {
+		public Iterator(Node<K, V> node) {
 			if (node == null)
 				c = Cursor.RIGHT;
 			else {
@@ -364,20 +360,20 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return this.new Iterator(root);
 	}
 
-	public Node<K,V> min() {
+	public Node<K, V> min() {
 		return root.min();
 	}
 
-	public Node<K,V> max() {
+	public Node<K, V> max() {
 		return root.max();
 	}
 
-	public Node<K,V> succ(Node<K,V> node) {
-		return node.rightChild.min();
+	public Node<K, V> succ(K key) {
+		return find(key).succ();
 	}
 
-	public Node<K,V> pred(Node<K,V> node) {
-		return node.pred();
+	public Node<K, V> pred(K key) {
+		return find(key).pred();
 	}
 
 }

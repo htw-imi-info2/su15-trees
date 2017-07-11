@@ -1,5 +1,6 @@
 package tree;
 
+
 /**
  * 
  * Entry/Node in the Tree. Could be extended to implement Map.Entry<K,V>
@@ -74,8 +75,26 @@ public class Node<K,V> {
 	}
 
 	public Node<K,V> pred() {
-		if (leftChild == null)
-			return null;
-		return leftChild.max();
+		if (leftChild != null)
+			return leftChild.max();
+		Node<K,V> up = this.parent;
+		Node<K,V> succ = this;
+		while ((up != null) && succ == up.leftChild) {
+			succ = up;
+			up = up.parent;
+		}
+		return up;
 	}
+	public Node<K,V> succ() {
+		if (rightChild != null)
+			return rightChild.min();
+		Node<K,V> up = this.parent;
+		Node<K,V> succ = this;
+		while ((up != null) && succ == up.rightChild) {
+			succ = up;
+			up = up.parent;
+		}
+		return up;
+	}
+
 }
