@@ -14,14 +14,14 @@ public class AVLNodeTest {
 
 	@Test
 	public void computeHeightAndBalanceFactorLeaf() {
-		AVLTree<Integer, Object>.Node node = tree.new Node(4, null);
+		Node<Integer, Object> node = new Node<>(4, null);
 		assertEquals(-1, node.height());
 	}
 
 	@Test
 	public void computeHeightAndBalanceFactorOneChild() {
-		AVLTree<Integer, Object>.Node a = tree.new Node(4, null);
-		AVLTree<Integer, Object>.Node b = tree.new Node(5, null);
+		Node<Integer, Object> a = new Node<>(4, null);
+		Node<Integer, Object> b = new Node<>(5, null);
 		a.rightChild = b;
 		assertEquals(0, a.height());
 		a.computeBalanceFactor();
@@ -30,9 +30,9 @@ public class AVLNodeTest {
 
 	@Test
 	public void computeHeightAndBalanceFactorTwoChilds() {
-		AVLTree<Integer, Object>.Node a = tree.new Node(4, null);
-		AVLTree<Integer, Object>.Node b = tree.new Node(5, null);
-		AVLTree<Integer, Object>.Node c = tree.new Node(3, null);
+		Node<Integer, Object> a = new Node<>(4, null);
+		Node<Integer, Object> b = new Node<>(5, null);
+		Node<Integer, Object> c = new Node<>(3, null);
 		a.leftChild = b;
 		a.rightChild = c;
 		assertEquals(0, a.height());
@@ -42,10 +42,10 @@ public class AVLNodeTest {
 
 	@Test
 	public void computeHeightAndBalanceFactorTwo() {
-		AVLTree<Integer, Object>.Node a = tree.new Node(4, null);
-		AVLTree<Integer, Object>.Node b = tree.new Node(5, null);
-		AVLTree<Integer, Object>.Node c = tree.new Node(3, null);
-		AVLTree<Integer, Object>.Node d = tree.new Node(2, null);
+		Node<Integer, Object> a = new Node<>(4, null);
+		Node<Integer, Object> b = new Node<>(5, null);
+		Node<Integer, Object> c = new Node<>(3, null);
+		Node<Integer, Object> d = new Node<>(2, null);
 		a.leftChild = b;
 		a.rightChild = c;
 		c.leftChild = d;
@@ -56,11 +56,11 @@ public class AVLNodeTest {
 
 	@Test
 	public void computeHeightAndBalanceFactorThree() {
-		AVLTree<Integer, Object>.Node a = tree.new Node(4, null);
-		AVLTree<Integer, Object>.Node b = tree.new Node(5, null);
-		AVLTree<Integer, Object>.Node c = tree.new Node(3, null);
-		AVLTree<Integer, Object>.Node d = tree.new Node(6, null);
-		AVLTree<Integer, Object>.Node e = tree.new Node(7, null);
+		Node<Integer, Object> a = new Node<>(4, null);
+		Node<Integer, Object> b = new Node<>(5, null);
+		Node<Integer, Object> c = new Node<>(3, null);
+		Node<Integer, Object> d = new Node<>(6, null);
+		Node<Integer, Object> e = new Node<>(7, null);
 		a.leftChild = b;
 		a.rightChild = c;
 		c.rightChild = d;
@@ -69,13 +69,14 @@ public class AVLNodeTest {
 		a.computeBalanceFactor();
 		assertEquals(-2, a.balanceFactor);
 	}
+
 	@Test
 	public void computeHeightAndBalanceFactorThree2() {
-		AVLTree<Integer, Object>.Node a = tree.new Node(4, null);
-		AVLTree<Integer, Object>.Node b = tree.new Node(5, null);
-		AVLTree<Integer, Object>.Node c = tree.new Node(3, null);
-		AVLTree<Integer, Object>.Node d = tree.new Node(6, null);
-		AVLTree<Integer, Object>.Node e = tree.new Node(7, null);
+		Node<Integer, Object> a = new Node<>(4, null);
+		Node<Integer, Object> b = new Node<>(5, null);
+		Node<Integer, Object> c = new Node<>(3, null);
+		Node<Integer, Object> d = new Node<>(6, null);
+		Node<Integer, Object> e = new Node<>(7, null);
 		a.leftChild = b;
 		b.leftChild = c;
 		c.leftChild = d;

@@ -15,98 +15,12 @@ import java.util.NoSuchElementException;
  */
 public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 	private static final String DELIM = ", ";
-	protected Node root;
+	protected Node<K,V> root;
 
-	/**
-	 * 
-	 * Entry/Node in the Tree. Could be extended to implement Map.Entry<K,V>
-	 * 
-	 * @see java.util.Map.Entry
-	 */
-	public class Node {
-		K key;
-		V value;
-		Node parent;
-		Node leftChild;
-		Node rightChild;
 
-		public Node(K key, V value) {
-			this.key = key;
-			this.value = value;
-		}
 
-		public String toString() {
-			return "(" + key.toString() + ","
-					+ ((leftChild == null) ? "" : leftChild.toString()) + ","
-					+ ((rightChild == null) ? "" : rightChild.toString()) + ")";
-		}
-
-		public String toStringBalanceFactor() {
-			return "("
-					+ key.toString()
-					+ "["
-					+ balanceFactor
-					+ "],"
-					+ ((leftChild == null) ? "" : leftChild
-							.toStringBalanceFactor())
-					+ ","
-					+ ((rightChild == null) ? "" : rightChild
-							.toStringBalanceFactor()) + ")";
-		}
-
-		public int size() {
-			int l = 0, r = 0;
-			if (leftChild != null)
-				l = leftChild.size();
-			if (rightChild != null)
-				r = rightChild.size();
-			return l + 1 + r;
-
-		}
-
-		public int height() {
-			int lh = -1, rh = -1;
-			if (leftChild != null)
-				lh = 1 + leftChild.height();
-			if (rightChild != null)
-				rh = 1 + rightChild.height();
-			return Math.max(lh, rh);
-		}
-
-		int balanceFactor;
-
-		public int computeBalanceFactor() {
-			int lh = -1, rh = -1;
-			if (leftChild != null)
-				lh = 1 + leftChild.height();
-			if (rightChild != null)
-				rh = 1 + rightChild.height();
-			return balanceFactor = lh - rh;
-		}
-
-		public Tree<K, V>.Node min() {
-			if (leftChild == null)
-				return this;
-			else
-				return leftChild.min();
-		}
-
-		public Tree<K, V>.Node max() {
-			if (rightChild == null)
-				return this;
-			else
-				return rightChild.max();
-		}
-
-		public Tree<K, V>.Node pred() {
-			if (leftChild == null)
-				return null;
-			return leftChild.max();
-		}
-	}
-
-	public Node find(K key) {
-		Node currentNode = root;
+	public Node<K,V> find(K key) {
+		Node<K,V> currentNode = root;
 		while (currentNode != null) {
 			int c = key.compareTo(currentNode.key);
 			if (c == 0)
@@ -122,11 +36,11 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return null;
 	}
 
-	public Node findRecursive(K key) throws Exception {
+	public Node<K,V> findRecursive(K key) throws Exception {
 		return findRecursive(key, root);
 	}
 
-	public Node findRecursive(K key, Node currentNode) {
+	public Node<K,V> findRecursive(K key, Node<K,V> currentNode) {
 		if (currentNode == null)
 			return null;
 		int c = key.compareTo(currentNode.key);
@@ -140,7 +54,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		}
 	}
 
-	public Node insert(K key) {
+	public Node<K,V> insert(K key) {
 		return insert(key, null);
 	}
 
@@ -150,16 +64,16 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		}
 	}
 
-	public Node insert(K key, V value) {
-		return insert(new Node(key, value));
+	public Node<K,V> insert(K key, V value) {
+		return insert(new Node<K,V>(key, value));
 	}
 
-	public Node insert(Node node) {
+	public Node<K,V> insert(Node<K,V> node) {
 		if (root == null) {
 			root = node;
 			return node;
 		}
-		Node current = root, parent = null;
+		Node<K,V> current = root, parent = null;
 		while (current != null) {
 			parent = current;
 			if (node.key.compareTo(current.key) < 0) {
@@ -183,7 +97,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return root == null;
 	}
 
-	public Node getRoot() {
+	public Node<K,V> getRoot() {
 		return root;
 	}
 
@@ -193,7 +107,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 				.replaceAll("^" + DELIM, "").replaceAll(DELIM + "$", "");
 	}
 
-	private String traverseInOrderToString(Node node) {
+	private String traverseInOrderToString(Node<K,V> node) {
 		if (node == null)
 			return "";
 		else
@@ -202,10 +116,10 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 					+ traverseInOrderToString(node.rightChild);
 	}
 
-	public List<Node> delete(K key) {
-		List<Node> rebalance = new ArrayList<Node>();
+	public List<Node<K,V>> delete(K key) {
+		List<Node<K,V>> rebalance = new ArrayList<Node<K,V>>();
 
-		Node node = find(key);
+		Node<K,V> node = find(key);
 		if (node == null)
 			return null;
 		if (node.leftChild == null) {
@@ -241,7 +155,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 			return rebalance;
 		}
 		// node has 2 childs.
-		Node succ = successor(node);
+		Node<K,V> succ = successor(node);
 		if (succ == node.rightChild) {
 			transplant(node, succ);
 			succ.leftChild = node.leftChild;
@@ -258,15 +172,15 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return rebalance;
 	}
 
-	public Node successor(K key) {
+	public Node<K,V> successor(K key) {
 		return successor(find(key));
 	}
 
-	public Node successor(Node node) {
+	public Node<K,V> successor(Node<K,V> node) {
 		if (node.rightChild != null)
 			return minimum(node.rightChild);
-		Node up = node.parent;
-		Node succ = node;
+		Node<K,V> up = node.parent;
+		Node<K,V> succ = node;
 		while ((up != null) && succ == up.rightChild) {
 			succ = up;
 			up = up.parent;
@@ -280,7 +194,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return toStringTree(root);
 	}
 
-	public String toStringTree(Node node) {
+	public String toStringTree(Node<K,V> node) {
 		String left = "(", right = ")", middle = "-";
 		if ((node.leftChild == null) && (node.rightChild == null)) {
 			left = right = middle = "";
@@ -299,11 +213,11 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return result;
 	}
 
-	public Node minimum() {
+	public Node<K,V> minimum() {
 		return minimum(root);
 	}
 
-	public Node minimum(Node node) {
+	public Node<K,V> minimum(Node<K,V> node) {
 		while (node.leftChild != null)
 			node = node.leftChild;
 		return node;
@@ -315,7 +229,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 	 * @param a
 	 * @param b
 	 */
-	public void transplant(Node a, Node b) {
+	public void transplant(Node<K,V> a, Node<K,V> b) {
 		if (a.parent == null) {
 			root = b;
 			if (b != null)
@@ -344,7 +258,7 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 	 * @param a
 	 * @param b
 	 */
-	public void replace(Node a, Node b) {
+	public void replace(Node<K,V> a, Node<K,V> b) {
 		if (a.parent == null)
 			root = b;
 		else {
@@ -376,10 +290,10 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 
 	public class Iterator implements java.util.Iterator<K> {
 		private Cursor c;
-		private Node node;
-		private Node max;
+		private Node<K,V> node;
+		private Node<K,V> max;
 
-		public Iterator(Node node) {
+		public Iterator(Node<K,V> node) {
 			if (node == null)
 				c = Cursor.RIGHT;
 			else {
@@ -450,20 +364,20 @@ public class Tree<K extends Comparable<K>, V> implements Iterable<K> {
 		return this.new Iterator(root);
 	}
 
-	public Node min() {
+	public Node<K,V> min() {
 		return root.min();
 	}
 
-	public Node max() {
+	public Node<K,V> max() {
 		return root.max();
 	}
 
-	public Node succ(Tree<K, V>.Node current) {
-		return current.rightChild.min();
+	public Node<K,V> succ(Node<K,V> node) {
+		return node.rightChild.min();
 	}
 
-	public Tree<K, V>.Node pred(Tree<K, V>.Node root) {
-		return root.pred();
+	public Node<K,V> pred(Node<K,V> node) {
+		return node.pred();
 	}
 
 }

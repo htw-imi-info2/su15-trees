@@ -40,9 +40,9 @@ public class TreeTest {
 		tree.insert("a");
 
 		assertEquals("a, b, c", tree.toString());
-		Tree<String, Object>.Node a = tree.find("a");
-		Tree<String, Object>.Node b = tree.find("b");
-		Tree<String, Object>.Node c = tree.find("c");
+		Node<String, Object> a = tree.find("a");
+		Node<String, Object> b = tree.find("b");
+		Node<String, Object> c = tree.find("c");
 		assertEquals(b, a.parent);
 		assertEquals(b, c.parent);
 		assertEquals(null, b.parent);
@@ -85,45 +85,7 @@ public class TreeTest {
 		//assertEquals("",tree.getRoot().toString());
 		assertEquals(3, tree.min().key.intValue());
 	}
-	@Test
-	public void testSuccessor2() {
-		Tree<Integer, Object> tree = new Tree<Integer, Object>();
-		tree.insert(new Integer[] { 10, 7, 3, 9, 20, 15, 11, 13, 30 });
-		assertEquals(11, tree.succ(tree.root).key.intValue());
-	}
-	@Test
-	public void testPredecessor() {
-		Tree<Integer, Object> tree = new Tree<Integer, Object>();
-		tree.insert(new Integer[] { 10, 7, 3, 9, 20, 15, 11, 13, 30 });
-		assertEquals(9, tree.pred(tree.root).key.intValue());
-	}
-	@Test
-	public void testPredecessorIfNonExistent() {
-		Tree<Integer, Object> tree = new Tree<Integer, Object>();
-		tree.insert(new Integer[] { 10, 11 });
-		assertEquals("(10,,(11,,))", tree.root.toString());
-		assertEquals(null, tree.pred(tree.root));
-	}
-
-	@Test
-	public void testSuccessor() {
-		Tree<Integer, Object> it = new Tree<Integer, Object>();
-		it.insert(12);
-		it.insert(5);
-		it.insert(20);
-		it.insert(11);
-		it.insert(23);
-		it.insert(28);
-		it.insert(1);
-		assertEquals("1, 5, 11, 12, 20, 23, 28", it.toString());
-		assertEquals("((1-5-11)-12-(-20-(-23-28)))", it.toStringTree());
-		assertEquals(Integer.valueOf(11), it.successor(5).key);
-		assertEquals(Integer.valueOf(5), it.successor(1).key);
-		assertEquals(Integer.valueOf(12), it.successor(11).key);
-		assertEquals(Integer.valueOf(20), it.successor(12).key);
-		assertEquals(Integer.valueOf(23), it.successor(20).key);
-		assertEquals(Integer.valueOf(28), it.successor(23).key);
-	}
+	
 
 	@Test
 	public void testDeleteLeaf() {
@@ -257,8 +219,8 @@ public class TreeTest {
 		it.insert(1);
 		it.insert(3);
 		assertEquals("(1-2-3)", it.toStringTree());
-		Tree<Integer, Object>.Node a = it.find(3);
-		Tree<Integer, Object>.Node b = it.find(1);
+		Node<Integer, Object> a = it.find(3);
+		Node<Integer, Object> b = it.find(1);
 		it.transplant(a, b);
 		assertEquals("(-2-1)", it.toStringTree());
 	}
@@ -270,8 +232,8 @@ public class TreeTest {
 		it.insert(1);
 		it.insert(3);
 		assertEquals("(1-2-3)", it.toStringTree());
-		Tree<Integer, Object>.Node a = it.find(2);
-		Tree<Integer, Object>.Node b = it.find(1);
+		Node<Integer, Object> a = it.find(2);
+		Node<Integer, Object> b = it.find(1);
 		it.transplant(a, b);
 		assertEquals("1", it.toStringTree());
 	}
@@ -284,10 +246,10 @@ public class TreeTest {
 		it.insert(3);
 		// given
 		assertEquals("(1-2-3)", it.toStringTree());
-		Tree<Integer, Object>.Node a = it.find(2);
-		Tree<Integer, Object>.Node b = it.new Node(10, null);
-		Tree<Integer, Object>.Node l = it.find(1);
-		Tree<Integer, Object>.Node r = it.find(3);
+		Node<Integer, Object> a = it.find(2);
+		Node<Integer, Object> b = new Node<>(10, null);
+		Node<Integer, Object> l = it.find(1);
+		Node<Integer, Object> r = it.find(3);
 		// when
 		it.replace(a, b);
 		// then
@@ -310,12 +272,12 @@ public class TreeTest {
 		it.insert(21);
 		it.insert(19);
 		assertEquals("(5-12-(19-20-21))", it.toStringTree());
-		Tree<Integer, Object>.Node a = it.find(20);
-		Tree<Integer, Object>.Node l = a.leftChild;
-		Tree<Integer, Object>.Node r = a.rightChild;
-		Tree<Integer, Object>.Node p = a.parent;
+		Node<Integer,Object> a = it.find(20);
+		Node<Integer,Object> l = a.leftChild;
+		Node<Integer,Object> r = a.rightChild;
+		Node<Integer,Object> p = a.parent;
 
-		Tree<Integer, Object>.Node b = it.new Node(10, null);
+		Node<Integer,Object> b = new Node<>(10, null);
 		// when
 		it.replace(a, b);
 		assertEquals("(5-12-(19-10-21))", it.toStringTree());
@@ -339,8 +301,8 @@ public class TreeTest {
 		it.insert(3);
 		it.insert(5);
 		assertEquals("(1-2-(3-4-5))", it.toStringTree());
-		Tree<Integer, Object>.Node four = it.find(4);
-		Tree<Integer, Object>.Node one = it.find(1);
+		Node<Integer,Object> four = it.find(4);
+		Node<Integer,Object> one = it.find(1);
 		it.transplant(one, four);
 		assertEquals("((3-4-5)-2-)", it.toStringTree());
 	}

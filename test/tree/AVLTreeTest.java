@@ -74,13 +74,13 @@ public class AVLTreeTest {
 	public void testIsBalanced() {
 		AVLTree<Integer, Object> it = new AVLTree<Integer, Object>();
 		it.insert(12);
-		AVLTree<Integer, Object>.Node root = it.root;
+		Node<Integer, Object> root = it.root;
 		assertTrue(it.isBalanced());
-		root.rightChild = it.new Node(5, null);
+		root.rightChild = new Node<>(5, null);
 		assertTrue(it.isBalanced());
-		root.rightChild.rightChild = it.new Node(5, null);
+		root.rightChild.rightChild = new Node<>(5, null);
 		assertFalse(it.isBalanced());
-		root.leftChild = it.new Node(5, null);
+		root.leftChild = new Node<>(5, null);
 		assertTrue(it.isBalanced());
 
 	}

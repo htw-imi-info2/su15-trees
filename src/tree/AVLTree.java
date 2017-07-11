@@ -5,24 +5,24 @@ import java.util.List;
 public class AVLTree<K extends Comparable<K>, V> extends Tree<K, V> {
 
 	@Override
-	public Node insert(K key) {
+	public Node<K,V> insert(K key) {
 		return insert(key, null);
 	}
 
 	@Override
-	public Node insert(K key, V value) {
+	public Node<K,V> insert(K key, V value) {
 		computeAllBalanceFactors();
-		Node avln = new Node(key, value);
+		Node<K,V> avln = new Node<K,V>(key, value);
 		super.insert(avln);
 		rebalanceAfterInsert(avln.parent);
 		return avln;
 	}
 
 	@Override
-	public List<Node> delete(K key) {
+	public List<Node<K,V>> delete(K key) {
 		computeAllBalanceFactors();
-		List<Node> checkOn = super.delete(key);
-		for (Node n: checkOn)
+		List<Node<K,V>> checkOn = super.delete(key);
+		for (Node<K,V> n: checkOn)
 		if (n != null)
 			rebalanceAfterDelete(n);
 		return checkOn;
@@ -32,7 +32,7 @@ public class AVLTree<K extends Comparable<K>, V> extends Tree<K, V> {
  * balanceFactor = leftHeight - rightHeight
  * @param n
  */
-	public void rebalanceAfterInsert(Node n) {
+	public void rebalanceAfterInsert(Node<K,V> n) {
 		if (n == null)
 			return;
 		int balanceBefore = n.balanceFactor;
@@ -55,7 +55,7 @@ public class AVLTree<K extends Comparable<K>, V> extends Tree<K, V> {
 			rebalanceAfterInsert(n.parent);
 	}
 
-	public void rebalanceAfterDelete(Node n) {
+	public void rebalanceAfterDelete(Node<K,V> n) {
 		if (n == null)
 			return;
 		int balanceBefore = n.balanceFactor;
@@ -87,8 +87,8 @@ public class AVLTree<K extends Comparable<K>, V> extends Tree<K, V> {
 	 * 
 	 * @param node
 	 */
-	public void rotateLeft(Node node) {
-		Node right = node.rightChild;
+	public void rotateLeft(Node<K,V> node) {
+		Node<K,V> right = node.rightChild;
 		// turn right's left subtree into node's right subtree
 		node.rightChild = right.leftChild;
 		if (right.leftChild != null)
@@ -114,8 +114,8 @@ public class AVLTree<K extends Comparable<K>, V> extends Tree<K, V> {
 	 * 
 	 * @param node
 	 */
-	public void rotateRight(Node node) {
-		Node left = node.leftChild;
+	public void rotateRight(Node<K,V> node) {
+		Node<K,V> left = node.leftChild;
 		// turn left's right subtree into node's left subtree
 		node.leftChild = left.rightChild;
 		if (left.rightChild != null)
@@ -140,7 +140,7 @@ public class AVLTree<K extends Comparable<K>, V> extends Tree<K, V> {
 		return isBalanced(root);
 	}
 
-	public boolean isBalanced(Node node) {
+	public boolean isBalanced(Node<K,V> node) {
 		if (node == null)
 			return true;
 		node.computeBalanceFactor();
@@ -154,7 +154,7 @@ public class AVLTree<K extends Comparable<K>, V> extends Tree<K, V> {
 		computeAllBalanceFactors(root);
 	}
 
-	public void computeAllBalanceFactors(Node node) {
+	public void computeAllBalanceFactors(Node<K,V> node) {
 		if (node == null)
 			return;
 		computeAllBalanceFactors(node.leftChild);
