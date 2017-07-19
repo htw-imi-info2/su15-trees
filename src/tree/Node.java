@@ -1,18 +1,17 @@
 package tree;
 
-
 /**
  * 
  * Entry/Node in the Tree. Could be extended to implement Map.Entry<K,V>
  * 
  * @see java.util.Map.Entry
  */
-public class Node<K,V> {
+public class Node<K, V> {
 	K key;
 	V value;
-	Node<K,V> parent;
-	Node<K,V> leftChild;
-	Node<K,V> rightChild;
+	Node<K, V> parent;
+	Node<K, V> leftChild;
+	Node<K, V> rightChild;
 
 	public Node(K key, V value) {
 		this.key = key;
@@ -67,34 +66,35 @@ public class Node<K,V> {
 			return leftChild.min();
 	}
 
-	public Node<K,V> max() {
+	public Node<K, V> max() {
 		if (rightChild == null)
 			return this;
 		else
 			return rightChild.max();
 	}
 
-	public Node<K,V> pred() {
+	public Node<K, V> pred() {
 		if (leftChild != null)
 			return leftChild.max();
-		Node<K,V> up = this.parent;
-		Node<K,V> succ = this;
+		Node<K, V> up = this.parent;
+		Node<K, V> succ = this;
 		while ((up != null) && succ == up.leftChild) {
 			succ = up;
 			up = up.parent;
 		}
 		return up;
 	}
-	public Node<K,V> succ() {
+
+	public Node<K, V> succ() {
 		if (rightChild != null)
 			return rightChild.min();
-		Node<K,V> up = this.parent;
-		Node<K,V> succ = this;
-		while ((up != null) && succ == up.rightChild) {
-			succ = up;
-			up = up.parent;
+		Node<K, V> parent = this.parent;
+		Node<K, V> child = this;
+		while ((parent != null) && child == parent.rightChild) {
+			child = parent;
+			parent = parent.parent;
 		}
-		return up;
+		return parent;
 	}
 
 }
